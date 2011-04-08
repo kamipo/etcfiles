@@ -1,0 +1,16 @@
+/usr/local/mysql/data/*.log {
+	daily
+	missingok
+	rotate 30
+	compress
+	delaycompress
+	notifempty
+	sharedscripts
+	postrotate
+		# just if mysqld is really running
+		if test -x /usr/local/mysql/bin/mysqladmin && /usr/local/mysql/bin/mysqladmin ping &>/dev/null
+		then
+			/usr/local/mysql/bin/mysqladmin flush-logs
+		fi
+	endscript
+}
